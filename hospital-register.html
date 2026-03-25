@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Register / Edit - LifeCare</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f9ff;
+      color: #223247;
+    }
+
+    .page-wrap {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 30px 16px 50px;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      padding: 26px;
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(198,40,40,0.18);
+      margin-bottom: 24px;
+    }
+
+    .topbar h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .topbar p {
+      margin: 0;
+      line-height: 1.7;
+      opacity: 0.96;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .top-actions a,
+    .top-actions button {
+      padding: 11px 16px;
+      border-radius: 12px;
+      border: none;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-dark {
+      background: #1f3147;
+      color: white;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: #c62828;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.06);
+      border: 1px solid #e4edf7;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      color: #c62828;
+      font-size: 24px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #223247;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1px solid #ccd8e6;
+      box-sizing: border-box;
+      font-size: 15px;
+      outline: none;
+      transition: 0.3s ease;
+      background: #fff;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 0 3px rgba(198,40,40,0.08);
+    }
+
+    .sub-card {
+      margin-top: 24px;
+      background: #f9fbff;
+      border: 1px solid #dce7f2;
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .sub-card h3 {
+      margin: 0 0 16px;
+      color: #1f3147;
+      font-size: 20px;
+    }
+
+    .helper {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .message-box {
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success {
+      background: #ecfdf3;
+      color: #166534;
+      border: 1px solid #b7ebc6;
+    }
+
+    .error {
+      background: #fff1f2;
+      color: #be123c;
+      border: 1px solid #fecdd3;
+    }
+
+    .submit-btn {
+      margin-top: 8px;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 900px) {
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .form-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="topbar">
+      <h1 id="pageHeading">Register Hospital on LifeCare</h1>
+      <p>
+        Add or update hospital profile, doctors, facilities, tests, specialties, contact details, and patient support information.
+      </p>
+
+      <div class="top-actions">
+        <a href="home.html" class="btn-light">← Back to Home</a>
+        <a href="#" onclick="goToDetailsPage(); return false;" class="btn-dark">View Public Profile</a>
+        <button class="btn-dark" onclick="logoutHospital()">Logout</button>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2 class="section-title">Hospital Profile Form</h2>
+      <div id="messageBox" class="message-box"></div>
+
+      <form id="hospitalForm">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Hospital Name</label>
+            <input type="text" id="hospitalName" required />
+          </div>
+
+          <div class="form-group">
+            <label>Hospital ID</label>
+            <input type="text" id="hospitalIdDisplay" readonly />
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" id="city" required />
+          </div>
+
+          <div class="form-group">
+            <label>State</label>
+            <input type="text" id="state" required />
+          </div>
+
+          <div class="form-group">
+            <label>Pincode</label>
+            <input type="text" id="pincode" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Full Address</label>
+          <textarea id="address" required></textarea>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label>Contact Number</label>
+            <input type="text" id="contact" required />
+          </div>
+
+          <div class="form-group">
+            <label>Emergency Number</label>
+            <input type="text" id="emergencyContact" />
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" />
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label>Hospital Type</label>
+            <select id="hospitalType">
+              <option value="">Select type</option>
+              <option>General Hospital</option>
+              <option>Multi-Speciality</option>
+              <option>Super Speciality</option>
+              <option>Diagnostic Center</option>
+              <option>Trauma Center</option>
+              <option>Maternity Hospital</option>
+              <option>Children Hospital</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Total Doctors</label>
+            <input type="number" id="doctorsCount" />
+          </div>
+
+          <div class="form-group">
+            <label>User Rating</label>
+            <input type="text" id="rating" placeholder="Example: 4.7" />
+          </div>
+        </div>
+
+        <div class="sub-card">
+          <h3>Facilities & Services</h3>
+
+          <div class="form-group">
+            <label>Main Facilities</label>
+            <textarea id="facilities" placeholder="ICU, Emergency, Ambulance, Pharmacy, Blood Bank, Operation Theatre..."></textarea>
+            <div class="helper">Comma se alag-alag likh sakte ho.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Available Tests / Diagnostics</label>
+            <textarea id="tests" placeholder="X-Ray, MRI, CT Scan, ECG, Blood Test, Ultrasound..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Treatments / Diseases Covered</label>
+            <textarea id="treatments" placeholder="Cardiology, Orthopedic, Neurology, Fever, Diabetes, Surgery..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Patient Opportunities / Support</label>
+            <textarea id="opportunities" placeholder="Online appointment, Emergency booking, Cashless treatment, 24x7 care..."></textarea>
+          </div>
+        </div>
+
+        <div class="sub-card">
+          <h3>Management Details</h3>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Owner / Director Name</label>
+              <input type="text" id="ownerName" />
+            </div>
+
+            <div class="form-group">
+              <label>Website Link</label>
+              <input type="text" id="website" placeholder="https://example.com" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>OPD Timing</label>
+              <input type="text" id="opdTiming" placeholder="9 AM - 6 PM" />
+            </div>
+
+            <div class="form-group">
+              <label>Ambulance Available</label>
+              <select id="ambulanceAvailable">
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Short Description</label>
+            <textarea id="description" placeholder="Write a short professional introduction of the hospital."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Register Hospital</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtZhr0uHblIoWKAxmXIdeiW5ThvlGmFUg",
+      authDomain: "health-care-3944b.firebaseapp.com",
+      projectId: "health-care-3944b",
+      storageBucket: "health-care-3944b.appspot.com",
+      messagingSenderId: "157502935550",
+      appId: "1:157502935550:web:e3683dcf20aee195a1f0af"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const db = firebase.firestore();
+
+    const hospitalId = localStorage.getItem("hospitalPortalId");
+    const isLoggedIn = localStorage.getItem("hospitalPortalLoggedIn");
+
+    if (!hospitalId || isLoggedIn !== "true") {
+      window.location.href = "hospital-login.html";
+    }
+
+    const form = document.getElementById("hospitalForm");
+    const messageBox = document.getElementById("messageBox");
+    const submitBtn = document.getElementById("submitBtn");
+    const pageHeading = document.getElementById("pageHeading");
+    const hospitalIdDisplay = document.getElementById("hospitalIdDisplay");
+
+    hospitalIdDisplay.value = hospitalId || "";
+
+    function showMessage(message, type) {
+      messageBox.style.display = "block";
+      messageBox.className = "message-box " + type;
+      messageBox.innerHTML = message;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function getFieldValue(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    }
+
+    function setFieldValue(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.value = value || "";
+    }
+
+    function loadHospitalData() {
+      db.collection("hospitals").doc(hospitalId).get()
+        .then((doc) => {
+          if (!doc.exists) return;
+
+          const data = doc.data();
+
+          pageHeading.innerText = "Edit Hospital Profile";
+          submitBtn.innerText = "Update Hospital";
+
+          setFieldValue("hospitalName", data.hospitalName);
+          setFieldValue("city", data.city);
+          setFieldValue("state", data.state);
+          setFieldValue("pincode", data.pincode);
+          setFieldValue("address", data.address);
+          setFieldValue("contact", data.contact);
+          setFieldValue("emergencyContact", data.emergencyContact);
+          setFieldValue("email", data.email);
+          setFieldValue("hospitalType", data.hospitalType);
+          setFieldValue("doctorsCount", data.doctorsCount);
+          setFieldValue("rating", data.rating);
+          setFieldValue("facilities", data.facilities);
+          setFieldValue("tests", data.tests);
+          setFieldValue("treatments", data.treatments);
+          setFieldValue("opportunities", data.opportunities);
+          setFieldValue("ownerName", data.ownerName);
+          setFieldValue("website", data.website);
+          setFieldValue("opdTiming", data.opdTiming);
+          setFieldValue("ambulanceAvailable", data.ambulanceAvailable);
+          setFieldValue("description", data.description);
+        })
+        .catch((error) => {
+          console.error("Load error:", error);
+          showMessage("Hospital data load nahi ho paya: " + error.message, "error");
+        });
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const hospitalData = {
+        hospitalId: hospitalId,
+        hospitalName: getFieldValue("hospitalName"),
+        city: getFieldValue("city"),
+        state: getFieldValue("state"),
+        pincode: getFieldValue("pincode"),
+        address: getFieldValue("address"),
+        contact: getFieldValue("contact"),
+        emergencyContact: getFieldValue("emergencyContact"),
+        email: getFieldValue("email"),
+        hospitalType: getFieldValue("hospitalType"),
+        doctorsCount: getFieldValue("doctorsCount"),
+        rating: getFieldValue("rating"),
+        facilities: getFieldValue("facilities"),
+        tests: getFieldValue("tests"),
+        treatments: getFieldValue("treatments"),
+        opportunities: getFieldValue("opportunities"),
+        ownerName: getFieldValue("ownerName"),
+        website: getFieldValue("website"),
+        opdTiming: getFieldValue("opdTiming"),
+        ambulanceAvailable: getFieldValue("ambulanceAvailable"),
+        description: getFieldValue("description"),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      if (!hospitalData.hospitalName || !hospitalData.city || !hospitalData.address || !hospitalData.contact) {
+        showMessage("Please fill all important fields first.", "error");
+        return;
+      }
+
+      db.collection("hospitals").doc(hospitalId).set(hospitalData, { merge: true })
+        .then(() => {
+          showMessage("Hospital profile saved successfully.", "success");
+          submitBtn.innerText = "Update Hospital";
+          pageHeading.innerText = "Edit Hospital Profile";
+        })
+        .catch((error) => {
+          console.error("Save error:", error);
+          showMessage("Hospital save nahi hua. Please try again. " + error.message, "error");
+        });
+    });
+
+    function logoutHospital() {
+      localStorage.removeItem("hospitalPortalLoggedIn");
+      localStorage.removeItem("hospitalPortalId");
+      localStorage.removeItem("hospitalPortalName");
+      window.location.href = "hospital-login.html";
+    }
+
+    function goToDetailsPage() {
+      if (!hospitalId) {
+        showMessage("Hospital ID not found.", "error");
+        return;
+      }
+      window.location.href = "hospital-details.html?id=" + encodeURIComponent(hospitalId);
+    }
+
+    loadHospitalData();
+  </script>
+</body>
+</html>

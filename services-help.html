@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services & Help - LifeCare</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f7fbff, #eef5fc);
+      color: #1f2d3d;
+    }
+
+    .topbar {
+      background: linear-gradient(90deg, #c62828, #e53935);
+      color: white;
+      padding: 18px 20px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: 0.5px;
+    }
+
+    .topbar p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    .navbar {
+      background: #213149;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 14px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      transition: 0.3s ease;
+      padding: 9px 14px;
+      border-radius: 10px;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      background: rgba(255,255,255,0.12);
+      color: #ffd9d9;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 34px auto 24px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .hero-content {
+      background: white;
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.08);
+      border: 1px solid #edf1f7;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: #ffe7e7;
+      color: #c62828;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .hero-content h2 {
+      margin: 0 0 14px;
+      font-size: 40px;
+      color: #213149;
+      line-height: 1.2;
+    }
+
+    .hero-content p {
+      margin: 0 0 22px;
+      color: #5b6775;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .hero-buttons a {
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      box-shadow: 0 10px 20px rgba(198,40,40,0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #eef4ff;
+      color: #213149;
+      border: 1px solid #d9e5ff;
+    }
+
+    .btn-secondary:hover {
+      background: #dfeaff;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .stat-box {
+      background: #f8fbff;
+      border: 1px solid #e7eef7;
+      border-radius: 16px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+
+    .stat-box h3 {
+      margin: 0 0 6px;
+      color: #c62828;
+      font-size: 24px;
+    }
+
+    .stat-box p {
+      margin: 0;
+      font-size: 13px;
+      color: #637082;
+      line-height: 1.5;
+    }
+
+    .hero-side {
+      background: linear-gradient(135deg, #213149, #304766);
+      color: white;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 12px 32px rgba(33,49,73,0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-side h3 {
+      margin-top: 0;
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    .hero-side ul {
+      padding-left: 18px;
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    .hero-side li {
+      margin-bottom: 8px;
+      color: rgba(255,255,255,0.94);
+    }
+
+    .section {
+      max-width: 1200px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      color: #c62828;
+      font-size: 34px;
+    }
+
+    .section-title p {
+      color: #637082;
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.07);
+      transition: 0.3s ease;
+      border: 1px solid #edf1f7;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #c62828, #e53935);
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+    }
+
+    .service-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff2f2;
+      font-size: 30px;
+      margin-bottom: 16px;
+    }
+
+    .service-card h3 {
+      margin: 0 0 10px;
+      color: #213149;
+      font-size: 21px;
+    }
+
+    .service-card p {
+      margin: 0 0 15px;
+      color: #5f6d7a;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .service-card a {
+      text-decoration: none;
+      color: #c62828;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .highlight-box {
+      margin-top: 28px;
+      background: linear-gradient(135deg, #fff4f4, #fff);
+      border-left: 6px solid #c62828;
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+      color: #c62828;
+      margin-bottom: 10px;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      color: #5f6d7a;
+      line-height: 1.8;
+    }
+
+    .emergency-wrapper {
+      background: linear-gradient(135deg, #fff7f7, #ffffff);
+      border: 1px solid #f3dada;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.05);
+    }
+
+    .emergency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .emergency-card {
+      background: #213149;
+      color: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(33,49,73,0.18);
+    }
+
+    .emergency-card h4 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 19px;
+    }
+
+    .emergency-card p {
+      margin: 0;
+      line-height: 1.7;
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .tip-card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid #edf1f7;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    }
+
+    .tip-card h3 {
+      margin: 12px 0 10px;
+      color: #213149;
+      font-size: 20px;
+    }
+
+    .tip-card p {
+      margin: 0;
+      color: #5f6d7a;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .faq-container {
+      display: grid;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      border: 1px solid #edf1f7;
+    }
+
+    .faq-item h4 {
+      margin: 0 0 8px;
+      color: #213149;
+      font-size: 18px;
+    }
+
+    .faq-item p {
+      margin: 0;
+      color: #5f6d7a;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .cta-section {
+      max-width: 1200px;
+      margin: 36px auto;
+      padding: 0 20px;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, #213149, #314867);
+      color: white;
+      border-radius: 24px;
+      padding: 34px 28px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(33,49,73,0.18);
+    }
+
+    .cta-card h2 {
+      margin-top: 0;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .cta-card p {
+      margin: 0 auto 20px;
+      max-width: 760px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .cta-buttons a {
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .cta-light {
+      background: white;
+      color: #c62828;
+    }
+
+    .cta-light:hover {
+      transform: translateY(-2px);
+    }
+
+    .cta-red {
+      background: #c62828;
+      color: white;
+    }
+
+    .cta-red:hover {
+      transform: translateY(-2px);
+    }
+
+    .contact-strip {
+      max-width: 1200px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .contact-card {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      border-radius: 24px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(198,40,40,0.22);
+    }
+
+    .contact-card h2 {
+      margin-top: 0;
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .contact-card p {
+      margin: 8px 0;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      background: #213149;
+      color: white;
+      margin-top: 40px;
+      padding: 36px 20px 20px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .footer-box h2,
+    .footer-box h3 {
+      margin-top: 0;
+      color: #fff;
+    }
+
+    .footer-box p,
+    .footer-box li,
+    .footer-box a {
+      color: #d6dce5;
+      font-size: 14px;
+      line-height: 1.9;
+      text-decoration: none;
+    }
+
+    .footer-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-box a:hover {
+      color: #ffb7b7;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      margin-top: 24px;
+      padding-top: 16px;
+      font-size: 14px;
+      color: #d6dce5;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content h2 {
+        font-size: 31px;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar h1 {
+        font-size: 24px;
+      }
+
+      .hero-content,
+      .hero-side,
+      .service-card,
+      .faq-item,
+      .contact-card,
+      .cta-card {
+        padding: 20px;
+      }
+
+      .hero-content h2 {
+        font-size: 26px;
+      }
+
+      .section-title h2 {
+        font-size: 28px;
+      }
+
+      .cta-card h2 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <h1>LifeCare Blood & Health Support</h1>
+    <p>Trusted Services, Emergency Help, and Smart Health Assistance in One Place</p>
+  </header>
+
+  <nav class="navbar">
+    <a href="home.html">Home</a>
+    <a href="register.html">Register Donor</a>
+    <a href="donor.html">Donor List</a>
+    <a href="services-help.html" class="active">Services & Help</a>
+    <a href="about.html">About Us</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">LifeCare Support Center</span>
+      <h2>Professional Health Support, Emergency Guidance and Essential Services</h2>
+      <p>
+        LifeCare ka Services & Help page users ko ek organized platform deta hai jahan blood donor support,
+        hospital access, emergency guidance, health assistant help, aur important service information ek hi
+        jagah easily mil sake. Isse website zyada professional, useful aur user-friendly ban jati hai.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#services" class="btn-primary">Explore Services</a>
+        <a href="#emergency" class="btn-secondary">Emergency Help</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-box">
+          <h3>24/7</h3>
+          <p>Emergency support guidance ke liye ready information</p>
+        </div>
+        <div class="stat-box">
+          <h3>Fast</h3>
+          <p>Quick access to donors, help pages and hospital support</p>
+        </div>
+        <div class="stat-box">
+          <h3>Smart</h3>
+          <p>Better navigation with organized services and guidance</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <h3>Why this page matters?</h3>
+      <ul>
+        <li>Emergency time me quick guidance milti hai</li>
+        <li>Blood donor support aur hospital access easy hota hai</li>
+        <li>Users ko important features ek place par milte hain</li>
+        <li>Website ka trust, design aur usefulness improve hota hai</li>
+        <li>Project zyada complete aur professional dikhta hai</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="section-title">
+      <h2>Our Services</h2>
+      <p>LifeCare platform ke important features aur support facilities jo users ko fast aur useful help dete hain</p>
+    </div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="service-icon">🩸</div>
+        <h3>Blood Donor Search</h3>
+        <p>Users required blood group aur need ke according available donors ko quickly search kar sakte hain.</p>
+        <a href="donor.html">Open Donor List →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📝</div>
+        <h3>Donor Registration</h3>
+        <p>New donors simple form ke through register kar sakte hain taaki emergency me unse contact kiya ja sake.</p>
+        <a href="register.html">Register Now →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🏥</div>
+        <h3>Hospital Support</h3>
+        <p>Nearby hospitals aur emergency support locations tak pahunchne ke liye better access milta hai.</p>
+        <a href="home.html#location">View Location Help →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h3>Health Assistant</h3>
+        <p>Basic symptoms aur awareness ke liye chatbot users ko quick support aur guidance provide karta hai.</p>
+        <a href="home.html#chat">Ask Assistant →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🚑</div>
+        <h3>Emergency Help</h3>
+        <p>Critical situations me quick action steps aur important support guidance users ko better response dene me help karte hain.</p>
+        <a href="#emergency">Check Emergency Help →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📞</div>
+        <h3>Contact Support</h3>
+        <p>Users information, reporting aur support ke liye contact details ka direct use kar sakte hain.</p>
+        <a href="#contact">Contact Now →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">💡</div>
+        <h3>Health Tips</h3>
+        <p>Daily health awareness, recovery support aur basic care ke liye useful tips available hain.</p>
+        <a href="#tips">Read Tips →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">❓</div>
+        <h3>FAQs & Guidance</h3>
+        <p>Common doubts ke clear answers users ko fast understanding aur easy navigation provide karte hain.</p>
+        <a href="#faq">View FAQs →</a>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Special Note</h3>
+      <p>
+        LifeCare ek support-based digital platform hai jo blood support, emergency help, hospital guidance aur health awareness ko easy banane ke liye design kiya gaya hai.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="emergency">
+    <div class="section-title">
+      <h2>Emergency Help</h2>
+      <p>Emergency condition me user ko kis tarah quickly act karna chahiye uske important steps</p>
+    </div>
+
+    <div class="emergency-wrapper">
+      <div class="emergency-grid">
+        <div class="emergency-card">
+          <h4>🚨 Immediate Action</h4>
+          <p>Patient ko safe jagah par rakho, situation ko calmly handle karo aur nearest medical help se contact karo.</p>
+        </div>
+
+        <div class="emergency-card">
+          <h4>🩺 Medical Attention</h4>
+          <p>Severe bleeding, breathing issue, unconsciousness ya chest pain ho to delay na karo aur hospital support lo.</p>
+        </div>
+
+        <div class="emergency-card">
+          <h4>📍 Find Nearby Help</h4>
+          <p>Location-based support se nearest hospital ya required emergency facility tak quickly pahunch sakte ho.</p>
+        </div>
+
+        <div class="emergency-card">
+          <h4>📱 Inform Family</h4>
+          <p>Emergency ke time trusted family member, guardian ya close contact ko immediately inform karna zaroori hai.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="tips">
+    <div class="section-title">
+      <h2>Helpful Health Tips</h2>
+      <p>Daily care, recovery aur basic awareness ke liye useful suggestions</p>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="service-icon">💧</div>
+        <h3>Stay Hydrated</h3>
+        <p>Paani aur healthy fluids body ko active rakhte hain aur weakness ya dehydration me support dete hain.</p>
+      </div>
+
+      <div class="tip-card">
+        <div class="service-icon">🥗</div>
+        <h3>Healthy Food</h3>
+        <p>Light, clean aur nutritious food body recovery, immunity aur energy level ke liye helpful hota hai.</p>
+      </div>
+
+      <div class="tip-card">
+        <div class="service-icon">😴</div>
+        <h3>Proper Rest</h3>
+        <p>Body ko recover karne ke liye enough sleep aur proper rest lena bahut important hota hai.</p>
+      </div>
+
+      <div class="tip-card">
+        <div class="service-icon">🧼</div>
+        <h3>Cleanliness</h3>
+        <p>Personal hygiene aur clean surroundings infection risk ko kam karne me madad karte hain.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="section-title">
+      <h2>Frequently Asked Questions</h2>
+      <p>Users ke common questions ke simple aur clear answers</p>
+    </div>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <h4>1. Kya LifeCare real hospital service hai?</h4>
+        <p>Nahi, LifeCare ek health support platform hai jo blood donor search, awareness, guidance aur emergency access ko easy banata hai.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>2. Kya chatbot doctor ki jagah le sakta hai?</h4>
+        <p>Nahi, chatbot sirf basic guidance aur awareness ke liye hai. Serious condition me doctor ya hospital contact karna chahiye.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>3. Donor kaise register kare?</h4>
+        <p>Register Donor page par jaake simple form fill karke donor details submit ki ja sakti hain.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>4. Nearby hospital help kaise milegi?</h4>
+        <p>Home page ke location-based feature ke through user nearest hospital ya support options tak pahunch sakta hai.</p>
+      </div>
+
+      <div class="faq-item">
+        <h4>5. Kya ye page emergency time me useful hai?</h4>
+        <p>Haan, ye page quick support links, emergency tips, donor help aur contact information ko ek place par provide karta hai.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-card">
+      <h2>Need Quick Access to Important Features?</h2>
+      <p>
+        Aap direct donor registration, donor list, emergency support aur main LifeCare homepage par ja sakte ho.
+        Ye quick access buttons users ko fast navigation aur better experience dete hain.
+      </p>
+      <div class="cta-buttons">
+        <a href="register.html" class="cta-light">Register Donor</a>
+        <a href="donor.html" class="cta-light">Open Donor List</a>
+        <a href="home.html" class="cta-red">Go to Home</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-strip" id="contact">
+    <div class="contact-card">
+      <h2>Need More Help?</h2>
+      <p>LifeCare Support Team aapke health-support experience ko better banane ke liye available hai.</p>
+      <p><strong>Phone:</strong> +91 7597546770</p>
+      <p><strong>Email:</strong> mahipsingh2486@gmail.com</p>
+      <p><strong>Location:</strong> Rajasthan, India</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-box">
+        <h2>LifeCare Blood & Health</h2>
+        <p>
+          LifeCare ek modern support platform hai jahan users donor registration, donor search,
+          hospital support, emergency guidance aur basic health assistance ka benefit le sakte hain.
+        </p>
+      </div>
+
+      <div class="footer-box">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="register.html">Register Donor</a></li>
+          <li><a href="donor.html">Donor List</a></li>
+          <li><a href="services-help.html">Services & Help</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-box">
+        <h3>Support Info</h3>
+        <p>Emergency Guidance</p>
+        <p>Blood Donor Support</p>
+        <p>Location-Based Help</p>
+        <p>Health Assistant Access</p>
+      </div>
+
+      <div class="footer-box">
+        <h3>Contact</h3>
+        <p>📍 Rajasthan, India</p>
+        <p>📞 +91 7597546770</p>
+        <p>📞 +91 7014013121</p>
+        <p>📞 +91 6350409994</p>
+        <p>✉️ mahipsingh2486@gmail.com</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 LifeCare Blood & Health | All Rights Reserved</p>
+    </div>
+  </footer>
+
+</body>
+</html>

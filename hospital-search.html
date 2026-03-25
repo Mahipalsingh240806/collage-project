@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeCare - Hospital Search</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      margin: 0;
+      background: #f7fbff;
+      font-family: Arial, sans-serif;
+    }
+
+    .search-page-wrap {
+      max-width: 1250px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .search-hero {
+      background: linear-gradient(135deg, #ffffff, #f4f8fd);
+      border: 1px solid #dfe8f1;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+      margin-bottom: 26px;
+    }
+
+    .search-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-top h1 {
+      margin: 0;
+      color: #c62828;
+      font-size: 34px;
+    }
+
+    .search-top p {
+      margin: 10px 0 0;
+      color: #5f6977;
+      line-height: 1.7;
+      max-width: 800px;
+    }
+
+    .search-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .back-btn,
+    .refresh-btn {
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .back-btn {
+      background: #22344f;
+      color: #fff;
+    }
+
+    .refresh-btn {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: #fff;
+    }
+
+    .filter-bar {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .filter-bar label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #213149;
+    }
+
+    .filter-bar select {
+      width: 100%;
+      height: 52px;
+      border-radius: 14px;
+      border: 1px solid #d7e3ef;
+      background: #f9fbff;
+      padding: 0 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .filter-btn {
+      height: 52px;
+      border: none;
+      border-radius: 14px;
+      padding: 0 24px;
+      background: #213149;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .result-heading {
+      margin: 26px 0 18px;
+      font-size: 20px;
+      color: #213149;
+      font-weight: 700;
+    }
+
+    .hospital-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .hospital-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #e2ebf4;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+      position: relative;
+      overflow: hidden;
+      transition: 0.25s ease;
+    }
+
+    .hospital-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #c62828, #ff8a65);
+    }
+
+    .hospital-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.09);
+    }
+
+    .hospital-card h3 {
+      margin: 0 0 14px;
+      font-size: 25px;
+      color: #22344f;
+      text-transform: capitalize;
+    }
+
+    .hospital-card p {
+      margin: 8px 0;
+      color: #5f6977;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .rating-badge {
+      display: inline-block;
+      margin: 12px 0 16px;
+      padding: 8px 14px;
+      background: #fff4df;
+      color: #cc7a00;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .view-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #213149;
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .empty-box {
+      background: #fff;
+      border: 1px dashed #cfdceb;
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      color: #667085;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .search-top h1 {
+        font-size: 26px;
+      }
+
+      .filter-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="search-page-wrap">
+    <div class="search-hero">
+      <div class="search-top">
+        <div>
+          <h1>Find Registered Hospitals</h1>
+          <p>
+            Browse city-wise registered hospitals connected with LifeCare.
+            You can change the city anytime and view detailed hospital information.
+          </p>
+        </div>
+
+        <div class="search-actions">
+          <a href="home.html#hospitalsSection" class="back-btn">← Back to Home</a>
+          <button class="refresh-btn" onclick="loadHospitalsByCity()">Refresh Results</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div>
+          <label for="searchCityFilter">Select City</label>
+          <select id="searchCityFilter">
+            <option value="">Loading cities...</option>
+          </select>
+        </div>
+
+        <button class="filter-btn" onclick="applyCityFilter()">Search</button>
+      </div>
+    </div>
+
+    <div class="result-heading" id="resultHeading">Loading hospitals...</div>
+    <div class="hospital-grid" id="searchHospitalList">
+      <div class="empty-box">Please wait, hospitals are loading...</div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="apps.js"></script>
+</body>
+</html>

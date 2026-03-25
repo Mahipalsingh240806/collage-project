@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Hospital ID - LifeCare</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f4f8ff, #eef4fb);
+      min-height: 100vh;
+      color: #213149;
+    }
+
+    .page-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+    }
+
+    .create-card {
+      width: 100%;
+      max-width: 720px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 34px 28px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e4edf7;
+    }
+
+    .top-badge {
+      display: inline-block;
+      background: #fdecec;
+      color: #c62828;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .create-card h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      color: #c62828;
+    }
+
+    .create-card p {
+      margin: 0 0 24px;
+      color: #5f6b7a;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .info-box {
+      background: #f8fbff;
+      border: 1px solid #dce8f5;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .info-box h3 {
+      margin: 0 0 8px;
+      color: #213149;
+      font-size: 18px;
+    }
+
+    .info-box p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #5e6775;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .input-group {
+      margin-bottom: 2px;
+    }
+
+    .input-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #213149;
+      font-size: 14px;
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d5e0ec;
+      border-radius: 12px;
+      outline: none;
+      font-size: 15px;
+      transition: 0.3s ease;
+      background: #fbfdff;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.08);
+    }
+
+    .input-note {
+      margin-top: 7px;
+      font-size: 12px;
+      color: #6c7785;
+      line-height: 1.5;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: none;
+      text-decoration: none;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      text-align: center;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: #fff;
+      flex: 1;
+      min-width: 210px;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #b71c1c, #d32f2f);
+    }
+
+    .secondary-btn {
+      background: #213149;
+      color: #fff;
+      min-width: 180px;
+    }
+
+    .secondary-btn:hover {
+      background: #162235;
+    }
+
+    .message-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .message-box.error {
+      display: block;
+      background: #fff2f2;
+      color: #c62828;
+      border: 1px solid #ffd5d5;
+    }
+
+    .message-box.success {
+      display: block;
+      background: #eefbf3;
+      color: #1f7a43;
+      border: 1px solid #cfeeda;
+    }
+
+    .generated-box {
+      margin-top: 22px;
+      background: linear-gradient(135deg, #f8fbff, #f1f7ff);
+      border: 1px solid #d6e4f1;
+      border-radius: 16px;
+      padding: 18px;
+      display: none;
+    }
+
+    .generated-box h3 {
+      margin: 0 0 10px;
+      color: #213149;
+    }
+
+    .generated-box p {
+      margin: 8px 0;
+      color: #425066;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .create-card {
+        padding: 24px 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .create-card h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="create-card">
+      <span class="top-badge">LifeCare Hospital Account Setup</span>
+      <h1>Create ID & Password</h1>
+      <p>
+        Hospital apna official account create kare. Registration/Licence number aur hospital Gmail
+        verify karke ek unique hospital ID generate hogi. Ye ID aapke email par bhej di jayegi.
+      </p>
+
+      <div class="info-box">
+        <h3>Required Details</h3>
+        <p>• Government registration no. ya licence no.</p>
+        <p>• Official hospital Gmail address</p>
+        <p>• Strong password</p>
+        <p>• Basic hospital identity details</p>
+      </div>
+
+      <form id="createHospitalIdForm">
+        <div class="form-grid">
+          <div class="input-group full">
+            <label for="hospitalName">Hospital Name</label>
+            <input type="text" id="hospitalName" placeholder="Enter official hospital name" required />
+          </div>
+
+          <div class="input-group">
+            <label for="registrationNo">Govt. Registration / Licence No.</label>
+            <input type="text" id="registrationNo" placeholder="Enter registration or licence number" required />
+            <div class="input-note">Example: state registration number, NABH licence, govt. hospital code, etc.</div>
+          </div>
+
+          <div class="input-group">
+            <label for="hospitalEmail">Hospital Gmail</label>
+            <input type="email" id="hospitalEmail" placeholder="example@gmail.com" required />
+            <div class="input-note">Official hospital email hi use karein.</div>
+          </div>
+
+          <div class="input-group">
+            <label for="hospitalPhone">Hospital Contact Number</label>
+            <input type="tel" id="hospitalPhone" placeholder="Enter official contact number" required />
+          </div>
+
+          <div class="input-group">
+            <label for="city">City</label>
+            <input type="text" id="city" placeholder="Enter city" required />
+          </div>
+
+          <div class="input-group">
+            <label for="password">Create Password</label>
+            <input type="password" id="password" placeholder="Create strong password" required />
+            <div class="input-note">Minimum 6 characters recommended.</div>
+          </div>
+
+          <div class="input-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="primary-btn">Done & Send ID to Gmail</button>
+          <a href="hospital-login.html" class="secondary-btn">Go to Login</a>
+        </div>
+
+        <div id="messageBox" class="message-box"></div>
+
+        <div id="generatedBox" class="generated-box">
+          <h3>Hospital Account Created</h3>
+          <p><strong>Generated Hospital ID:</strong> <span id="generatedHospitalId">-</span></p>
+          <p><strong>Email Sent To:</strong> <span id="generatedHospitalEmail">-</span></p>
+          <p>Ab aap isi ID aur apne set kiye huye password se login kar sakte ho.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Your JS file -->
+  <script src="hospital-create-id.js"></script>
+</body>
+</html>

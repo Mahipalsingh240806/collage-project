@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LifeCare - Home</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #f7fbff;
+    }
+
+    #chat,
+    #hospitalsSection,
+    #location {
+      scroll-margin-top: 120px;
+    }
+
+    .hospital-results-box {
+      margin-top: 20px;
+    }
+
+    #hospitalList {
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    #map {
+      width: 100%;
+      height: 500px;
+      border-radius: 16px;
+      overflow: hidden;
+      min-height: 500px;
+      background: #eef3f8;
+      border: 1px solid #dbe6f1;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      position: relative;
+      z-index: 0;
+    }
+
+    .map-card,
+    .location-right,
+    .location-section {
+      position: relative;
+      z-index: 0;
+    }
+
+    .leaflet-container {
+      z-index: 0 !important;
+    }
+
+    .leaflet-pane,
+    .leaflet-tile-pane,
+    .leaflet-overlay-pane,
+    .leaflet-shadow-pane,
+    .leaflet-marker-pane,
+    .leaflet-tooltip-pane,
+    .leaflet-popup-pane {
+      z-index: 0 !important;
+    }
+
+    .leaflet-top,
+    .leaflet-bottom,
+    .leaflet-control {
+      z-index: 1 !important;
+    }
+
+    .hospital-item {
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f8fbff;
+      border: 1px solid #d9e6f2;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .hospital-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .hospital-item h4 {
+      margin: 0 0 8px;
+      color: #c62828;
+      font-size: 16px;
+    }
+
+    .hospital-item p {
+      margin: 4px 0;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .load-more-btn {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      background: #c62828;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .load-more-btn:hover {
+      background: #a91f1f;
+    }
+
+    .connected-section {
+      margin: 40px 0 30px;
+      padding: 34px 28px;
+      background: linear-gradient(135deg, #ffffff, #f3f8ff);
+      border-radius: 20px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+      border: 1px solid #dde8f3;
+    }
+
+    .connected-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .connected-title-wrap h2 {
+      margin: 0;
+      font-size: 30px;
+      color: #c62828;
+    }
+
+    .connected-title-wrap p {
+      margin: 8px 0 0;
+      color: #5b6470;
+      line-height: 1.7;
+      max-width: 760px;
+      font-size: 15px;
+    }
+
+    .hospital-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .add-hospital-btn {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 15px;
+      box-shadow: 0 8px 18px rgba(198, 40, 40, 0.2);
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    .add-hospital-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #b71c1c, #d32f2f);
+    }
+
+    .create-id-btn {
+      background: linear-gradient(135deg, #213149, #304766);
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 15px;
+      box-shadow: 0 8px 18px rgba(33, 49, 73, 0.18);
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    .create-id-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #162235, #24354f);
+    }
+
+    .hospital-search-box {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 28px;
+      border: 1px solid #e4edf7;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .search-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .search-header-row h3 {
+      margin: 0;
+      font-size: 24px;
+      color: #213149;
+    }
+
+    .search-header-row p {
+      margin: 6px 0 0;
+      color: #667085;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .search-controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: end;
+      margin-top: 16px;
+    }
+
+    .search-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #213149;
+    }
+
+    .search-field select {
+      width: 100%;
+      height: 52px;
+      border: 1px solid #d7e3ef;
+      border-radius: 14px;
+      padding: 0 14px;
+      font-size: 15px;
+      background: #f9fbff;
+      outline: none;
+      transition: 0.25s ease;
+    }
+
+    .search-field select:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.08);
+    }
+
+    .search-btn {
+      height: 52px;
+      border: none;
+      border-radius: 14px;
+      padding: 0 24px;
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(198, 40, 40, 0.22);
+      transition: 0.25s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .city-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .city-tag {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #edf4fb;
+      color: #28415f;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid #dce8f3;
+    }
+
+    .empty-connected {
+      background: #fff;
+      border: 1px dashed #cfdceb;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      color: #667085;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .connected-section {
+        padding: 24px 18px;
+      }
+
+      .connected-title-wrap h2 {
+        font-size: 24px;
+      }
+
+      .search-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .search-btn {
+        width: 100%;
+      }
+
+      #map {
+        height: 340px;
+        min-height: 340px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-left">
+      <img src="logo.png" alt="hospital logo" class="logo">
+      <div class="brand-text">
+        <h1>LifeCare Blood & Health Support</h1>
+        <p class="tagline">Saving lives through timely blood support and smart health assistance.</p>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="profile" onclick="toggleProfile()">👤</div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+
+      <div class="profile-box" id="profileBox" style="display: none;">
+        <p><strong>User:</strong> <span id="userName">Loading...</span></p>
+        <p>Role: Patient</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="register.html">Register Donor</a></li>
+      <li><a href="donor.html">Donor List</a></li>
+      <li><a href="#hospitalsSection">Hospitals 🏥</a></li>
+      <li><a href="services-help.html">Services & Help</a></li>
+      <li><a href="#chat">Health Assistant</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div class="card chat-container" id="chat">
+      <h2>🩺 Health Assistant</h2>
+
+      <div class="chat-box" id="chatBox">
+        <div class="message bot">
+          <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" alt="bot">
+          <span>Hello 👋 I am your health assistant. Ask me anything.</span>
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input type="text" id="question" placeholder="Type or speak your problem...">
+        <button type="button" onclick="askAI()">Send</button>
+        <button type="button" onclick="startVoice()">🎤</button>
+      </div>
+
+      <p class="warning">
+        ⚠️ This is not a real doctor. Consult a professional.
+      </p>
+    </div>
+
+    <section id="hospitalsSection">
+      <section class="connected-section">
+        <div class="connected-topbar">
+          <div class="connected-title-wrap">
+            <h2>Hospitals Connected With LifeCare</h2>
+            <p>
+              Choose a city and explore only the hospitals registered in that location.
+              Hospitals will open on a separate page for a cleaner and more professional browsing experience.
+            </p>
+          </div>
+
+          <div class="hospital-actions">
+            <a href="hospital-login.html" class="add-hospital-btn">+ Add Hospital</a>
+            <a href="hospital-create-id.html" class="create-id-btn">Create ID & Password</a>
+          </div>
+        </div>
+
+        <div class="hospital-search-box">
+          <div class="search-header-row">
+            <div>
+              <h3>Search Registered Hospitals by City</h3>
+              <p>
+                Select your city to see registered hospitals on a dedicated results page.
+                Only registered cities will appear in the list.
+              </p>
+            </div>
+          </div>
+
+          <div class="search-controls">
+            <div class="search-field">
+              <label for="cityFilter">Select City</label>
+              <select id="cityFilter">
+                <option value="">Loading cities...</option>
+              </select>
+            </div>
+
+            <button class="search-btn" onclick="goToHospitalSearch()">Search Hospitals</button>
+          </div>
+
+          <div class="city-tags" id="cityTags">
+            <span class="city-tag">Loading cities...</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="location-section" id="location">
+        <div class="location-container">
+          <div class="location-left">
+            <span class="section-tag">Live Location</span>
+            <h2>Find Nearby Help Faster</h2>
+            <p>
+              Share your current location to quickly access nearby hospitals within 50 km
+              and view them directly on a clear live map.
+            </p>
+
+            <div class="location-actions">
+              <button class="location-btn" type="button" onclick="getLocation()">
+                📍 Get Current Location
+              </button>
+            </div>
+
+            <div class="location-info-box">
+              <h3>Your Location Status</h3>
+              <p id="locationStatus">Click the button to fetch your live location.</p>
+            </div>
+
+            <div class="location-info-box hospital-results-box">
+              <h3>Nearby Hospitals (Within 50 km)</h3>
+              <div id="hospitalList">Hospitals will appear here after fetching your location.</div>
+            </div>
+          </div>
+
+          <div class="location-right">
+            <div class="map-card">
+              <div class="map-top">
+                <h3>Live Map View</h3>
+                <span class="map-badge">OpenStreetMap Live</span>
+              </div>
+              <div id="map"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script src="apps.js"></script>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-box">
+        <h2>LifeCare Blood & Health</h2>
+        <p>
+          LifeCare ek health support platform hai jahan users blood donors search kar sakte hain,
+          donor register kar sakte hain, aur nearby health help tak jaldi pahunch sakte hain.
+        </p>
+      </div>
+
+      <div class="footer-box">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="register.html">Register Donor</a></li>
+          <li><a href="donor.html">Donor List</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-box">
+        <h3>Contact Us</h3>
+        <p>📍 Rajasthan, India</p>
+        <p>📞 +91 7597546770</p>
+        <p>📞 +91 7014013121</p>
+        <p>📞 +91 6350409994</p>
+        <p>✉️ mahipsingh2486@gmail.com</p>
+      </div>
+
+      <div class="footer-box">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="https://www.who.int/" target="_blank">🌐</a>
+          <a href="https://www.instagram.com/_mahipalsingh_parmar_?igsh=cXM3emdyOXRibnNw" target="_blank">📸</a>
+          <a href="https://x.com/MahipalSin2486" target="_blank">🐦</a>
+          <a href="https://www.youtube.com/@ParralelCodingMS-kn9xl" target="_blank">▶️</a>
+          <a href="https://t.me/parralelcodingMS" target="_blank">✈️</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 LifeCare Blood & Health | All Rights Reserved</p>
+    </div>
+  </footer>
+</body>
+</html>

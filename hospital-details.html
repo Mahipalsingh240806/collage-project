@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Details - LifeCare</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6faff;
+      color: #223247;
+    }
+
+    .details-wrap {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 28px 16px 50px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: white;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(198, 40, 40, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .hero p {
+      margin: 0;
+      opacity: 0.96;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions a {
+      padding: 11px 16px;
+      background: #fff;
+      color: #c62828;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    .hero-actions a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e4edf7;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      color: #c62828;
+      font-size: 22px;
+    }
+
+    .info-list p {
+      margin: 10px 0;
+      line-height: 1.7;
+      font-size: 15px;
+      color: #475569;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fff4df;
+      color: #d97706;
+      font-weight: bold;
+      font-size: 13px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .big-empty {
+      background: #fff;
+      border: 1px dashed #d1d9e6;
+      border-radius: 18px;
+      padding: 30px;
+      text-align: center;
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    .book-box {
+      background: linear-gradient(135deg, #1f3147, #2d435f);
+      color: white;
+    }
+
+    .book-box h2 {
+      color: white;
+    }
+
+    .book-box p {
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.7;
+    }
+
+    .book-btn {
+      display: inline-block;
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 12px 16px;
+      background: white;
+      color: #1f3147;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .book-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .appointment-btn {
+      background: linear-gradient(135deg, #ffd54f, #ffb300);
+      color: #1f3147 !important;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="details-wrap">
+    <div class="hero">
+      <h1 id="hospitalName">Hospital Details</h1>
+      <p id="hospitalDesc">Loading hospital profile...</p>
+
+      <div class="hero-actions">
+        <a href="hospital-search.html">← Back to Hospital Search</a>
+        <a href="#contactSection">Contact Info</a>
+        <a href="#" id="heroAppointmentBtn">Book Appointment</a>
+      </div>
+    </div>
+
+    <div id="detailsContainer" class="big-empty">Loading details...</div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtZhr0uHblIoWKAxmXIdeiW5ThvlGmFUg",
+      authDomain: "health-care-3944b.firebaseapp.com",
+      projectId: "health-care-3944b",
+      storageBucket: "health-care-3944b.appspot.com",
+      messagingSenderId: "157502935550",
+      appId: "1:157502935550:web:e3683dcf20aee195a1f0af"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const db = firebase.firestore();
+
+    const params = new URLSearchParams(window.location.search);
+    const hospitalId = params.get("id");
+    const detailsContainer = document.getElementById("detailsContainer");
+    const heroAppointmentBtn = document.getElementById("heroAppointmentBtn");
+
+    function safeText(value, fallback = "Not available") {
+      return value && String(value).trim() ? value : fallback;
+    }
+
+    function safePhone(value) {
+      return value && String(value).trim() ? String(value).trim() : "";
+    }
+
+    if (!hospitalId) {
+      detailsContainer.innerHTML = "Invalid hospital ID.";
+      heroAppointmentBtn.style.display = "none";
+    } else {
+      heroAppointmentBtn.href = `book-appointment.html?id=${hospitalId}`;
+
+      db.collection("hospitals").doc(hospitalId).get()
+        .then((doc) => {
+          if (!doc.exists) {
+            detailsContainer.innerHTML = "Hospital details not found.";
+            heroAppointmentBtn.style.display = "none";
+            return;
+          }
+
+          const data = doc.data();
+          const phone = safePhone(data.contact);
+
+          document.getElementById("hospitalName").innerText = safeText(data.hospitalName, "Hospital Details");
+          document.getElementById("hospitalDesc").innerText = safeText(
+            data.description,
+            "Trusted hospital profile on LifeCare."
+          );
+
+          detailsContainer.innerHTML = `
+            <div class="grid">
+              <div>
+                <div class="card">
+                  <h2>Hospital Overview</h2>
+                  <div class="info-list">
+                    <p><strong>Hospital Name:</strong> ${safeText(data.hospitalName)}</p>
+                    <p><strong>Hospital ID:</strong> ${safeText(data.hospitalId)}</p>
+                    <p><strong>Type:</strong> ${safeText(data.hospitalType)}</p>
+                    <p><strong>City:</strong> ${safeText(data.city)}</p>
+                    <p><strong>State:</strong> ${safeText(data.state)}</p>
+                    <p><strong>Pincode:</strong> ${safeText(data.pincode)}</p>
+                    <p><strong>Address:</strong> ${safeText(data.address)}</p>
+                    <p><strong>Total Doctors:</strong> ${safeText(data.doctorsCount)}</p>
+                    <p><strong>Rating:</strong> ${safeText(data.rating)} ⭐</p>
+                    <p><strong>Owner / Director:</strong> ${safeText(data.ownerName)}</p>
+                    <p><strong>OPD Timing:</strong> ${safeText(data.opdTiming)}</p>
+                    <p><strong>Ambulance:</strong> ${safeText(data.ambulanceAvailable)}</p>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <h2>Facilities</h2>
+                  <div class="info-list">
+                    <p>${safeText(data.facilities)}</p>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <h2>Available Tests / Diagnostics</h2>
+                  <div class="info-list">
+                    <p>${safeText(data.tests)}</p>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <h2>Treatments / Diseases Covered</h2>
+                  <div class="info-list">
+                    <p>${safeText(data.treatments)}</p>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <h2>Patient Support & Opportunities</h2>
+                  <div class="info-list">
+                    <p>${safeText(data.opportunities)}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card" id="contactSection">
+                  <h2>Contact Information</h2>
+                  <div class="info-list">
+                    <p><strong>Contact:</strong> ${safeText(data.contact)}</p>
+                    <p><strong>Emergency Contact:</strong> ${safeText(data.emergencyContact)}</p>
+                    <p><strong>Email:</strong> ${safeText(data.email)}</p>
+                    <p><strong>Website:</strong> ${safeText(data.website)}</p>
+                  </div>
+                </div>
+
+                <div class="card book-box">
+                  <h2>Appointment & Support</h2>
+                  <p>
+                    Patients can use this hospital profile to understand services, facilities, and
+                    treatment options before contacting the hospital directly for appointment or
+                    emergency support.
+                  </p>
+                  <a href="${phone ? `tel:${phone}` : '#'}" class="book-btn">Call Hospital</a>
+                  <a href="book-appointment.html?id=${hospitalId}" class="book-btn appointment-btn">Book Appointment</a>
+                </div>
+
+                <div class="card">
+                  <h2>Quick Highlights</h2>
+                  <span class="badge">${safeText(data.hospitalType)}</span>
+                  <span class="badge">${safeText(data.city)}</span>
+                  <span class="badge">${safeText(data.rating)} ⭐</span>
+                  <span class="badge">${safeText(data.ambulanceAvailable, "Support")}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .catch((error) => {
+          console.error(error);
+          detailsContainer.innerHTML = "Hospital details load nahi ho paye.";
+          heroAppointmentBtn.style.display = "none";
+        });
+    }
+  </script>
+</body>
+</html>

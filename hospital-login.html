@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Login - LifeCare</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f4f8ff, #eef4fb);
+      min-height: 100vh;
+      color: #213149;
+    }
+
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 34px 28px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e4edf7;
+    }
+
+    .login-badge {
+      display: inline-block;
+      background: #fdecec;
+      color: #c62828;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .login-card h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      color: #c62828;
+    }
+
+    .login-card p {
+      margin: 0 0 24px;
+      color: #5f6b7a;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #213149;
+      font-size: 14px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d5e0ec;
+      border-radius: 12px;
+      outline: none;
+      font-size: 15px;
+      transition: 0.3s ease;
+      background: #fbfdff;
+    }
+
+    .input-group input:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.08);
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      background: linear-gradient(135deg, #c62828, #e53935);
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-top: 6px;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #b71c1c, #d32f2f);
+    }
+
+    .bottom-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .back-link {
+      text-align: center;
+      text-decoration: none;
+      color: #5a6472;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      color: #c62828;
+    }
+
+    .message-box {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message-box.error {
+      display: block;
+      background: #fff2f2;
+      color: #c62828;
+      border: 1px solid #ffd5d5;
+    }
+
+    .message-box.success {
+      display: block;
+      background: #eefbf3;
+      color: #1f7a43;
+      border: 1px solid #cfeeda;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card">
+      <span class="login-badge">LifeCare Hospital Access</span>
+      <h1>Hospital Login</h1>
+      <p>
+        Login with your hospital ID and password. After login, you can register your hospital
+        details or edit previously submitted information.
+      </p>
+
+      <form id="hospitalLoginForm">
+        <div class="input-group">
+          <label for="hospitalId">Hospital ID</label>
+          <input type="text" id="hospitalId" placeholder="Enter hospital ID" required />
+        </div>
+
+        <div class="input-group">
+          <label for="hospitalPassword">Password</label>
+          <input type="password" id="hospitalPassword" placeholder="Enter password" required />
+        </div>
+
+        <button type="submit" class="login-btn">Login</button>
+        <div id="messageBox" class="message-box"></div>
+      </form>
+
+      <div class="bottom-actions">
+        <a href="home.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtZhr0uHblIoWKAxmXIdeiW5ThvlGmFUg",
+      authDomain: "health-care-3944b.firebaseapp.com",
+      projectId: "health-care-3944b",
+      storageBucket: "health-care-3944b.appspot.com",
+      messagingSenderId: "157502935550",
+      appId: "1:157502935550:web:e3683dcf20aee195a1f0af"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const db = firebase.firestore();
+
+    const loginForm = document.getElementById("hospitalLoginForm");
+    const messageBox = document.getElementById("messageBox");
+
+    function showMessage(message, type) {
+      messageBox.className = "message-box " + type;
+      messageBox.style.display = "block";
+      messageBox.textContent = message;
+    }
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const hospitalId = document.getElementById("hospitalId").value.trim();
+      const hospitalPassword = document.getElementById("hospitalPassword").value.trim();
+
+      if (!hospitalId || !hospitalPassword) {
+        showMessage("Please enter hospital ID and password.", "error");
+        return;
+      }
+
+      db.collection("hospitalAccounts").doc(hospitalId).get()
+        .then((doc) => {
+          if (!doc.exists) {
+            showMessage("Hospital ID not found. Please create ID first.", "error");
+            return;
+          }
+
+          const data = doc.data();
+
+          if (data.password !== hospitalPassword) {
+            showMessage("Incorrect password. Please try again.", "error");
+            return;
+          }
+
+          // Same keys as register page
+          localStorage.setItem("hospitalPortalLoggedIn", "true");
+          localStorage.setItem("hospitalPortalId", hospitalId);
+          localStorage.setItem("hospitalPortalName", data.hospitalName || "");
+
+          showMessage("Login successful. Redirecting...", "success");
+
+          window.location.href = "hospital-register.html";
+        })
+        .catch((error) => {
+          console.error("Login error:", error);
+          showMessage("Something went wrong while logging in: " + error.message, "error");
+        });
+    });
+  </script>
+</body>
+</html>

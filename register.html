@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register Donor - LifeCare</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f8fbff, #eaf4ff);
+      color: #222;
+    }
+
+    header {
+      background: #c62828;
+      color: white;
+      padding: 18px 40px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 40px auto;
+      background: white;
+      padding: 35px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      text-align: center;
+      color: #c62828;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 6px rgba(198, 40, 40, 0.2);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .row {
+      display: flex;
+      gap: 18px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      background: #c62828;
+      color: white;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #a61d1d;
+    }
+
+    .btn.secondary {
+      background: #555;
+    }
+
+    .btn.secondary:hover {
+      background: #333;
+    }
+
+    #statusMessage {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      padding: 18px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding: 25px;
+      }
+
+      .row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      header {
+        font-size: 22px;
+        padding: 16px 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    LifeCare Blood & Health
+  </header>
+
+  <div class="container">
+    <h1>Register as Donor</h1>
+    <p class="subtitle">Please fill in your details to become a blood donor and help save lives.</p>
+
+    <form id="donorForm">
+      <div class="row">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" placeholder="Enter your age" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" required>
+            <option value="">Select gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="bloodgroup">Blood Group</label>
+          <select id="bloodgroup" required>
+            <option value="">Select blood group</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="Enter phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Enter email address">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" placeholder="Enter your city" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" placeholder="Enter your address"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Additional Information</label>
+        <textarea id="message" placeholder="Any health note or extra information"></textarea>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn">Register Donor</button>
+        <a href="home.html" class="btn secondary">⬅ Back to Home</a>
+      </div>
+
+      <div id="statusMessage"></div>
+    </form>
+  </div>
+
+  <footer>
+    © 2026 LifeCare Blood & Health | Donate Blood, Save Lives
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtZhr0uHblIoWKAxmXIdeiW5ThvlGmFUg",
+      authDomain: "health-care-3944b.firebaseapp.com",
+      projectId: "health-care-3944b",
+      storageBucket: "health-care-3944b.appspot.com",
+      messagingSenderId: "157502935550",
+      appId: "1:157502935550:web:e3683dcf20aee195a1f0af"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const donorForm = document.getElementById("donorForm");
+    const statusMessage = document.getElementById("statusMessage");
+
+    donorForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const donorData = {
+        name: document.getElementById("fullname").value.trim(),
+        age: document.getElementById("age").value.trim(),
+        gender: document.getElementById("gender").value,
+        blood: document.getElementById("bloodgroup").value,
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        createdAt: new Date().toISOString()
+      };
+
+      if (!donorData.name || !donorData.age || !donorData.gender || !donorData.blood || !donorData.phone || !donorData.city) {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "Please fill all required fields.";
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "donors"), donorData);
+        statusMessage.style.color = "green";
+        statusMessage.textContent = "Donor registered successfully!";
+        donorForm.reset();
+      } catch (error) {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "Error: " + error.message;
+      }
+    });
+  </script>
+
+</body>
+</html>

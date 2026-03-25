@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Donor - LifeCare</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:linear-gradient(to right,#f8fbff,#eaf4ff);
+      color:#222;
+    }
+
+    header{
+      background:#c62828;
+      color:#fff;
+      padding:18px 40px;
+      text-align:center;
+      font-size:28px;
+      font-weight:bold;
+      box-shadow:0 4px 12px rgba(0,0,0,.15);
+    }
+
+    .container{
+      max-width:1200px;
+      margin:30px auto;
+      padding:20px;
+    }
+
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
+
+    .back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      background:#fff;
+      color:#c62828;
+      border:2px solid #c62828;
+      padding:10px 18px;
+      border-radius:10px;
+      font-weight:bold;
+      box-shadow:0 4px 14px rgba(0,0,0,.08);
+      transition:.3s;
+    }
+
+    .back-btn:hover{
+      background:#c62828;
+      color:#fff;
+      transform:translateY(-2px);
+    }
+
+    .search-box,
+    .empty,
+    .card,
+    .chart-section,
+    .summary-section{
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 6px 20px rgba(0,0,0,.10);
+    }
+
+    .search-box{
+      padding:25px;
+      margin-bottom:25px;
+    }
+
+    h1{
+      text-align:center;
+      color:#c62828;
+      margin-bottom:10px;
+    }
+
+    .sub{
+      text-align:center;
+      color:#666;
+      margin-bottom:20px;
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:15px;
+    }
+
+    input,select,button{
+      padding:12px 14px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      font-size:16px;
+    }
+
+    input:focus,select:focus{
+      outline:none;
+      border-color:#c62828;
+      box-shadow:0 0 0 3px rgba(198,40,40,0.12);
+    }
+
+    button{
+      background:#c62828;
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-weight:bold;
+      transition:.3s;
+    }
+
+    button:hover{
+      background:#a61d1d;
+    }
+
+    .privacy-note{
+      margin-top:12px;
+      font-size:13px;
+      color:#888;
+      text-align:center;
+    }
+
+    .summary-section{
+      padding:25px;
+      margin-bottom:25px;
+    }
+
+    .section-title{
+      font-size:24px;
+      color:#c62828;
+      margin-bottom:18px;
+      text-align:center;
+    }
+
+    .blood-summary-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      gap:15px;
+    }
+
+    .blood-stat-card{
+      background:linear-gradient(135deg,#fff5f5,#ffeaea);
+      border:1px solid #ffd6d6;
+      border-radius:14px;
+      padding:18px 12px;
+      text-align:center;
+      transition:.3s;
+    }
+
+    .blood-stat-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 18px rgba(198,40,40,.12);
+    }
+
+    .blood-stat-card h3{
+      color:#c62828;
+      font-size:22px;
+      margin-bottom:8px;
+    }
+
+    .blood-stat-card p{
+      color:#666;
+      font-size:14px;
+      margin-bottom:8px;
+    }
+
+    .blood-stat-card .count{
+      font-size:28px;
+      font-weight:bold;
+      color:#222;
+    }
+
+    .chart-section{
+      padding:25px;
+      margin-bottom:25px;
+    }
+
+    .charts-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .chart-card{
+      background:#fafcff;
+      border:1px solid #e6eef7;
+      border-radius:14px;
+      padding:20px;
+      min-height:360px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .chart-card h3{
+      text-align:center;
+      color:#213149;
+      margin-bottom:15px;
+      font-size:20px;
+    }
+
+    .chart-wrap{
+      position:relative;
+      height:280px;
+      width:100%;
+    }
+
+    #donorContainer{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      padding:20px;
+      border-top:5px solid #c62828;
+    }
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+      gap:10px;
+    }
+
+    .name{
+      font-size:22px;
+      font-weight:bold;
+    }
+
+    .blood{
+      background:#c62828;
+      color:#fff;
+      padding:6px 12px;
+      border-radius:20px;
+      font-weight:bold;
+    }
+
+    .info p{
+      margin:8px 0;
+      line-height:1.5;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:15px;
+    }
+
+    .btn{
+      flex:1;
+      min-width:120px;
+      text-align:center;
+      text-decoration:none;
+      color:#fff;
+      padding:10px 12px;
+      border-radius:8px;
+      font-weight:bold;
+      border:none;
+    }
+
+    .call{
+      background:#1976d2;
+    }
+
+    .wa{
+      background:#25d366;
+    }
+
+    .donate-btn{
+      background:#8e24aa;
+    }
+
+    .donate-btn:hover{
+      background:#6d1b7b;
+    }
+
+    .reset-btn{
+      background:#ff9800;
+    }
+
+    .reset-btn:hover{
+      background:#e68900;
+    }
+
+    .status-box{
+      margin-top:14px;
+      padding:12px;
+      border-radius:12px;
+      background:#f8f9ff;
+      border:1px solid #dde5ff;
+    }
+
+    .status-label{
+      display:inline-block;
+      margin-top:8px;
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .not-eligible{
+      background:#ffebee;
+      color:#c62828;
+    }
+
+    .eligible{
+      background:#e8f5e9;
+      color:#2e7d32;
+    }
+
+    .empty{
+      padding:30px;
+      text-align:center;
+      color:#666;
+    }
+
+    @media (max-width:600px){
+      header{
+        font-size:22px;
+        padding:16px 20px;
+      }
+
+      .container{
+        margin:20px auto;
+        padding:15px;
+      }
+
+      .chart-card{
+        min-height:320px;
+      }
+
+      .chart-wrap{
+        height:240px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>LifeCare Blood & Health</header>
+
+  <div class="container">
+    <div class="top-bar">
+      <a href="home.html" class="back-btn">← Back to Home</a>
+    </div>
+
+    <div class="summary-section">
+      <h2 class="section-title">Blood Group Availability</h2>
+      <div class="blood-summary-grid" id="bloodSummary"></div>
+    </div>
+
+    <div class="chart-section">
+      <h2 class="section-title">Donor Analytics</h2>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Blood Group Bar Chart</h3>
+          <div class="chart-wrap">
+            <canvas id="bloodBarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Blood Group Pie Chart</h3>
+          <div class="chart-wrap">
+            <canvas id="bloodPieChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <h1>Search Donor</h1>
+      <p class="sub">Search by name, city, or blood group</p>
+
+      <div class="filters">
+        <input type="text" id="searchName" placeholder="Search by name">
+        <input type="text" id="searchCity" placeholder="Search by city">
+   <select id="searchBlood">
+  <option value="none" selected>None</option>
+  <option value="all">All Blood Groups</option>
+  <option value="A+">A+</option>
+  <option value="A-">A-</option>
+  <option value="B+">B+</option>
+  <option value="B-">B-</option>
+  <option value="AB+">AB+</option>
+  <option value="AB-">AB-</option>
+  <option value="O+">O+</option>
+  <option value="O-">O-</option>
+</select>
+        <button onclick="loadDonors()">Search</button>
+      </div>
+
+      <p class="privacy-note">Donor details are partially hidden for privacy and safety.</p>
+    </div>
+
+    <div id="donorContainer"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtZhr0uHblIoWKAxmXIdeiW5ThvlGmFUg",
+      authDomain: "health-care-3944b.firebaseapp.com",
+      projectId: "health-care-3944b",
+      storageBucket: "health-care-3944b.appspot.com",
+      messagingSenderId: "157502935550",
+      appId: "1:157502935550:web:e3683dcf20aee195a1f0af"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let barChartInstance = null;
+    let pieChartInstance = null;
+
+    function maskPhone(phone) {
+      const onlyDigits = (phone || "").replace(/\D/g, "");
+      if (!onlyDigits) return "N/A";
+      if (onlyDigits.length <= 5) return onlyDigits;
+      return "xxxxx" + onlyDigits.slice(-5);
+    }
+
+    function maskEmail(email) {
+      if (!email || !email.includes("@")) return "N/A";
+      const parts = email.split("@");
+      const username = parts[0];
+      const domain = parts[1];
+      const maskedUser = username.length <= 2
+        ? username[0] + "xx"
+        : username.slice(0, 2) + "xxxx";
+      return maskedUser + "@" + domain;
+    }
+
+    function maskAddress(address) {
+      if (!address) return "N/A";
+      if (address.length <= 6) return "xxxxxx";
+      return address.slice(0, 4) + "xxxxxx";
+    }
+
+    function maskCity(city) {
+      if (!city) return "N/A";
+      if (city.length <= 2) return city[0] + "x";
+      return city.slice(0, 2) + "xxx";
+    }
+
+    function getBloodCounts(donors) {
+      const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+      const counts = {
+        "A+": 0, "A-": 0, "B+": 0, "B-": 0,
+        "AB+": 0, "AB-": 0, "O+": 0, "O-": 0
+      };
+
+      donors.forEach((donor) => {
+        const blood = donor.blood || "";
+        if (counts.hasOwnProperty(blood)) {
+          counts[blood]++;
+        }
+      });
+
+      return bloodGroups.map(group => ({
+        group,
+        count: counts[group]
+      }));
+    }
+
+    function renderSummaryCards(bloodStats) {
+      const summaryBox = document.getElementById("bloodSummary");
+
+      let html = "";
+      bloodStats.forEach(item => {
+        html += `
+          <div class="blood-stat-card">
+            <h3>${item.group}</h3>
+            <p>Available Donors</p>
+            <div class="count">${item.count}</div>
+          </div>
+        `;
+      });
+
+      summaryBox.innerHTML = html;
+    }
+
+    function renderCharts(bloodStats) {
+      const labels = bloodStats.map(item => item.group);
+      const data = bloodStats.map(item => item.count);
+
+      const barCtx = document.getElementById("bloodBarChart").getContext("2d");
+      const pieCtx = document.getElementById("bloodPieChart").getContext("2d");
+
+      if (barChartInstance) barChartInstance.destroy();
+      if (pieChartInstance) pieChartInstance.destroy();
+
+      barChartInstance = new Chart(barCtx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Number of Donors",
+            data: data,
+            backgroundColor: [
+              "#c62828", "#e53935", "#d81b60", "#8e24aa",
+              "#5e35b1", "#3949ab", "#1e88e5", "#00897b"
+            ],
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { precision: 0 }
+            }
+          }
+        }
+      });
+
+      pieChartInstance = new Chart(pieCtx, {
+        type: "pie",
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: [
+              "#c62828", "#e53935", "#d81b60", "#8e24aa",
+              "#5e35b1", "#3949ab", "#1e88e5", "#00897b"
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      });
+    }
+
+    function getDonorKey(donor) {
+      const name = donor.name || "";
+      const phone = donor.phone || "";
+      const blood = donor.blood || "";
+      return `${name}_${phone}_${blood}`;
+    }
+
+    function addMonths(date, months) {
+      const d = new Date(date);
+      d.setMonth(d.getMonth() + months);
+      return d;
+    }
+
+    function formatDate(date) {
+      return new Date(date).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+    function getDonationData() {
+      return JSON.parse(localStorage.getItem("donationStatusData") || "{}");
+    }
+
+    function saveDonationData(data) {
+      localStorage.setItem("donationStatusData", JSON.stringify(data));
+    }
+
+    function markAsDonated(donorKey) {
+      const donationData = getDonationData();
+      const today = new Date().toISOString();
+      donationData[donorKey] = today;
+      saveDonationData(donationData);
+      loadDonors();
+    }
+
+    function resetDonationStatus(donorKey) {
+      const donationData = getDonationData();
+      delete donationData[donorKey];
+      saveDonationData(donationData);
+      loadDonors();
+    }
+
+    function getEligibilityInfo(donorKey) {
+      const donationData = getDonationData();
+      const donatedAt = donationData[donorKey];
+
+      if (!donatedAt) {
+        return {
+          hasDonated: false,
+          eligible: true,
+          statusText: "Eligible to donate",
+          donatedDate: null,
+          nextEligibleDate: null,
+          daysLeft: 0
+        };
+      }
+
+      const donatedDate = new Date(donatedAt);
+      const nextEligibleDate = addMonths(donatedDate, 6);
+      const now = new Date();
+
+      const eligible = now >= nextEligibleDate;
+      const diffMs = nextEligibleDate - now;
+      const daysLeft = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+
+      return {
+        hasDonated: true,
+        eligible,
+        statusText: eligible ? "Eligible Again" : `Not Eligible for ${daysLeft} day(s)`,
+        donatedDate,
+        nextEligibleDate,
+        daysLeft
+      };
+    }
+
+    async function loadDonors() {
+      const donorContainer = document.getElementById("donorContainer");
+      const searchName = document.getElementById("searchName").value.toLowerCase().trim();
+      const searchCity = document.getElementById("searchCity").value.toLowerCase().trim();
+      const searchBlood = document.getElementById("searchBlood").value;
+
+      donorContainer.innerHTML = `<div class="empty">Loading donors...</div>`;
+
+      try {
+        const snapshot = await getDocs(collection(db, "donors"));
+
+        if (snapshot.empty) {
+          document.getElementById("bloodSummary").innerHTML = `<div class="empty">No donor data available</div>`;
+          donorContainer.innerHTML = `<div class="empty">No donors found</div>`;
+          return;
+        }
+
+        const allDonors = [];
+        snapshot.forEach((doc) => {
+          allDonors.push(doc.data());
+        });
+
+        const bloodStats = getBloodCounts(allDonors);
+        renderSummaryCards(bloodStats);
+        renderCharts(bloodStats);
+
+        let html = "";
+        let found = false;
+
+        allDonors.forEach((d) => {
+          const donorName = (d.name || "").toLowerCase();
+          const donorCity = (d.city || "").toLowerCase();
+          const donorBlood = d.blood || "";
+          const phone = d.phone || "";
+          const cleanPhone = phone.replace(/[^0-9]/g, "");
+          const donorKey = getDonorKey(d);
+          const eligibility = getEligibilityInfo(donorKey);
+
+          const matchName = donorName.includes(searchName);
+          const matchCity = donorCity.includes(searchCity);
+          const matchBlood = searchBlood === "" || donorBlood === searchBlood;
+
+          if (matchName && matchCity && matchBlood) {
+            found = true;
+
+            html += `
+              <div class="card">
+                <div class="top">
+                  <div class="name">${d.name || "No Name"}</div>
+                  <div class="blood">${d.blood || "N/A"}</div>
+                </div>
+
+                <div class="info">
+                  <p><strong>Age:</strong> ${d.age || "N/A"}</p>
+                  <p><strong>Gender:</strong> ${d.gender || "N/A"}</p>
+                  <p><strong>Phone:</strong> ${maskPhone(d.phone)}</p>
+                  <p><strong>City:</strong> ${maskCity(d.city)}</p>
+                  <p><strong>Email:</strong> ${maskEmail(d.email)}</p>
+                  <p><strong>Address:</strong> ${maskAddress(d.address)}</p>
+                </div>
+
+                <div class="status-box">
+                  ${
+                    eligibility.hasDonated
+                      ? `
+                        <p><strong>Blood donated on:</strong> ${formatDate(eligibility.donatedDate)}</p>
+                        <p><strong>Next eligible after:</strong> ${formatDate(eligibility.nextEligibleDate)}</p>
+                        <span class="status-label ${eligibility.eligible ? 'eligible' : 'not-eligible'}">
+                          ${eligibility.statusText}
+                        </span>
+                      `
+                      : `
+                        <p><strong>Status:</strong> No recent blood donation marked.</p>
+                        <span class="status-label eligible">Eligible to donate</span>
+                      `
+                  }
+                </div>
+
+                <div class="actions">
+                  <a class="btn call" href="tel:${phone}">📞 Call</a>
+                  <a class="btn wa" href="https://wa.me/91${cleanPhone}" target="_blank">🟢 WhatsApp</a>
+                  <button class="btn donate-btn" onclick="markAsDonatedByKey('${donorKey.replace(/'/g, "\\'")}')">🩸 Mark Blood Donated</button>
+                  <button class="btn reset-btn" onclick="resetDonationByKey('${donorKey.replace(/'/g, "\\'")}')">♻ Reset</button>
+                </div>
+              </div>
+            `;
+          }
+        });
+
+        donorContainer.innerHTML = found
+          ? html
+          : `<div class="empty">No matching donors found</div>`;
+
+      } catch (error) {
+        document.getElementById("bloodSummary").innerHTML = `<div class="empty">Error loading summary</div>`;
+        donorContainer.innerHTML = `<div class="empty">Error: ${error.message}</div>`;
+      }
+    }
+
+    window.markAsDonatedByKey = function(donorKey) {
+      const confirmMark = confirm("Kya aap is donor ko blood donated mark karna chahte ho?");
+      if (confirmMark) {
+        markAsDonated(donorKey);
+      }
+    };
+
+    window.resetDonationByKey = function(donorKey) {
+      const confirmReset = confirm("Kya aap is donor ka donation status reset karna chahte ho?");
+      if (confirmReset) {
+        resetDonationStatus(donorKey);
+      }
+    };
+
+    loadDonors();
+    window.loadDonors = loadDonors;
+  </script>
+</body>
+</html>

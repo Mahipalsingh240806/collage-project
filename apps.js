@@ -34,7 +34,7 @@ auth.onAuthStateChanged((user) => {
       path.endsWith("/");
 
     if (!isPublicPage) {
-      window.location.href = "login.html";
+      window.location.href = "/collage-project/index.html";
     }
     return;
   }
@@ -54,7 +54,7 @@ auth.onAuthStateChanged((user) => {
 function logout() {
   auth.signOut()
     .then(() => {
-      window.location.href = "login.html";
+      window.location.href = "/collage-project/index.html";
     })
     .catch((error) => {
       alert("Logout failed: " + error.message);

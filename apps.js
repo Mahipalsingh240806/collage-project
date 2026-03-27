@@ -564,7 +564,187 @@ const medicalKnowledge = [
     tests: "BP check, sugar test, CBC, ECG if needed.",
     doctorWhen: "Agar dizziness baar-baar ho ya chest pain ke saath ho.",
     emergency: "Behoshi, chest pain, breathing issue, confusion."
-  }
+  },
+  {
+  title: "🦟 Dengue / Malaria",
+  keywords: ["dengue", "malaria", "platelet"],
+  possible: "Ye mosquito se failne wali serious infection ho sakti hai. Dengue me platelet count kam ho sakta hai aur malaria me chills aur fever aata hai.",
+  care: `
+  ✔ Complete rest lo  
+  ✔ Paani, ORS, coconut water zyada piyo  
+  ✔ Light aur liquid diet lo  
+  ✔ Doctor ki medicine time par lo  
+
+  ❌ Painkiller bina doctor ke mat lo (especially ibuprofen)  
+  ❌ Dehydration bilkul mat hone do  
+  `,
+  tests: "CBC, Platelet count, Dengue NS1, Malaria test",
+  doctorWhen: "High fever 2 din se zyada rahe ya weakness badh rahi ho",
+  emergency: "Platelet bahut kam ho jana, bleeding, severe vomiting, behoshi"
+},
+
+{
+  title: "❤️ Heart Problem",
+  keywords: ["chest pain", "heart"],
+  possible: "Ye heart se related serious problem ho sakti hai jaise heart attack ya blockage.",
+  care: `
+  ✔ Turant rest karo aur hilna mat  
+  ✔ Aspirin (doctor ki salah se) li ja sakti hai  
+  ✔ Emergency service ko call karo  
+
+  ❌ Ignore mat karo  
+  ❌ Self-treatment mat karo  
+  `,
+  tests: "ECG, Troponin test, Blood test",
+  doctorWhen: "Chest pain ya pressure feel ho",
+  emergency: "Left arm pain, sweating, breathing issue = immediate emergency"
+},
+
+{
+  title: "🧠 Stroke",
+  keywords: ["stroke", "paralysis"],
+  possible: "Brain me blood flow rukne ya clot hone ki wajah se stroke ho sakta hai.",
+  care: `
+  ✔ Turant hospital le jao (golden time 3-4 hours hota hai)  
+  ✔ Patient ko seedha litao  
+
+  ❌ Time waste mat karo  
+  ❌ Ghar par treatment mat karo  
+  `,
+  tests: "CT scan, MRI",
+  doctorWhen: "Face tedha ho, bolne me dikkat ho",
+  emergency: "Body ka ek side kaam na kare, speech loss"
+},
+
+{
+  title: "🫁 Asthma",
+  keywords: ["asthma", "breathing"],
+  possible: "Ye lungs ki problem hai jisme saans lene me dikkat hoti hai.",
+  care: `
+  ✔ Inhaler use karo (doctor ke according)  
+  ✔ Dust, smoke avoid karo  
+  ✔ Warm environment me raho  
+
+  ❌ Cold air exposure avoid karo  
+  ❌ Smoking bilkul mat karo  
+  `,
+  tests: "Spirometry, lung test",
+  doctorWhen: "Bar bar breathing problem ho",
+  emergency: "Saans bilkul na aa paaye"
+},
+
+{
+  title: "🧠 Stress / Anxiety",
+  keywords: ["stress", "anxiety"],
+  possible: "Ye mental health problem hai jo overthinking, tension aur sleep issues se hoti hai.",
+  care: `
+  ✔ Meditation aur deep breathing karo  
+  ✔ Daily exercise karo  
+  ✔ Kisi trusted person se baat karo  
+
+  ❌ Akela mat raho  
+  ❌ Negative thinking me mat faso  
+  `,
+  tests: "Psychological evaluation",
+  doctorWhen: "Daily life affect ho",
+  emergency: "Severe panic attack, control na ho"
+},
+
+{
+  title: "🦷 Tooth Pain",
+  keywords: ["tooth pain", "daant dard"],
+  possible: "Ye cavity, infection ya gum problem ki wajah se ho sakta hai.",
+  care: `
+  ✔ Brush aur oral hygiene maintain karo  
+  ✔ Warm salt water se gargle karo  
+
+  ❌ Bahut thanda ya garam avoid karo  
+  ❌ Pain ignore mat karo  
+  `,
+  tests: "Dental X-ray",
+  doctorWhen: "Pain continue rahe",
+  emergency: "Face swelling ya severe pain"
+},
+
+{
+  title: "👁️ Eye Problem",
+  keywords: ["eye pain", "red eye"],
+  possible: "Eye infection, allergy ya irritation ho sakta hai.",
+  care: `
+  ✔ Eyes clean rakho  
+  ✔ Screen time kam karo  
+
+  ❌ Eyes rub mat karo  
+  ❌ Dirty hands se touch mat karo  
+  `,
+  tests: "Eye checkup",
+  doctorWhen: "Blurred vision ho",
+  emergency: "Sudden vision loss"
+},
+
+{
+  title: "👂 Ear Problem",
+  keywords: ["ear pain"],
+  possible: "Ear infection ya wax blockage ho sakta hai.",
+  care: `
+  ✔ Ear clean aur dry rakho  
+
+  ❌ Ear me kuch insert mat karo  
+  ❌ Self cleaning avoid karo  
+  `,
+  tests: "Ear exam",
+  doctorWhen: "Pain continue ho",
+  emergency: "Hearing loss"
+},
+
+{
+  title: "🌿 Skin Problem",
+  keywords: ["itching", "fungal"],
+  possible: "Fungal infection ya allergy ho sakti hai.",
+  care: `
+  ✔ Skin clean aur dry rakho  
+  ✔ Cotton clothes pehno  
+
+  ❌ Scratch mat karo  
+  ❌ Tight clothes avoid karo  
+  `,
+  tests: "Skin test",
+  doctorWhen: "Spread ho raha ho",
+  emergency: "Severe infection"
+},
+
+{
+  title: "🩸 Diabetes",
+  keywords: ["diabetes", "sugar"],
+  possible: "Blood sugar level high hone ki condition hai.",
+  care: `
+  ✔ Sugar control diet lo  
+  ✔ Regular exercise karo  
+
+  ❌ Meetha zyada mat khao  
+  ❌ Medicine skip mat karo  
+  `,
+  tests: "Fasting sugar, HbA1c",
+  doctorWhen: "Regular monitoring zaruri hai",
+  emergency: "Very high sugar, confusion"
+},
+
+{
+  title: "🫃 Stomach Problem",
+  keywords: ["stomach pain", "gas"],
+  possible: "Acidity, gas ya digestion problem ho sakti hai.",
+  care: `
+  ✔ Light aur healthy food lo  
+  ✔ Paani zyada piyo  
+
+  ❌ Junk food avoid karo  
+  ❌ Overeating mat karo  
+  `,
+  tests: "Basic tests",
+  doctorWhen: "Pain repeat ho",
+  emergency: "Severe stomach pain"
+}
+  
 ];
 
 // =========================
